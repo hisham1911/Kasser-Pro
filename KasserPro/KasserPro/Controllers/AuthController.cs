@@ -1,4 +1,5 @@
 using KasserPro.Api.Data;
+using KasserPro.Api.DTOs;
 using KasserPro.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -84,7 +85,7 @@ namespace KasserPro.Api.Controllers
                 Name = dto.StoreName,
                 Phone = dto.Phone,
                 IsActive = true,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow
             };
             _context.Stores.Add(store);
             await _context.SaveChangesAsync();
@@ -98,7 +99,7 @@ namespace KasserPro.Api.Controllers
                 Role = "Owner",
                 IsActive = true,
                 StoreId = store.Id,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -160,7 +161,7 @@ namespace KasserPro.Api.Controllers
                 Role = dto.Role,
                 IsActive = true,
                 StoreId = currentUser.StoreId,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow
             };
 
             _context.Users.Add(user);
@@ -221,7 +222,7 @@ namespace KasserPro.Api.Controllers
                 issuer: _configuration["Jwt:Issuer"] ?? "KasserPro",
                 audience: _configuration["Jwt:Audience"] ?? "KasserProUsers",
                 claims: claims,
-                expires: DateTime.Now.AddDays(7),
+                expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: credentials
             );
 
@@ -241,27 +242,4 @@ namespace KasserPro.Api.Controllers
         }
     }
 
-    // DTOs
-    public class LoginDto
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
-
-    public class RegisterDto
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
-        public string StoreName { get; set; } = string.Empty;
-        public string? Phone { get; set; }
-    }
-
-    public class AddUserDto
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
-        public string Role { get; set; } = "Cashier"; // Cashier or Manager
-    }
 }

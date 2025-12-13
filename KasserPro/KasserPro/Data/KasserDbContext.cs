@@ -137,7 +137,7 @@ namespace KasserPro.Api.Data
                     Phone = "01000000000",
                     Address = "القاهرة، مصر",
                     IsActive = true,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
             
@@ -161,7 +161,7 @@ namespace KasserPro.Api.Data
                     Role = "Owner",
                     IsActive = true,
                     StoreId = 1,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
                 }
             );
 

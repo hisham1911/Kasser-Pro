@@ -10,7 +10,7 @@ namespace KasserPro.Api.Models
         public string? Address { get; set; }                       // العنوان
         public string? Logo { get; set; }                          // شعار المتجر (URL)
         public bool IsActive { get; set; } = true;                 // هل المتجر نشط؟
-        public DateTime CreatedAt { get; set; } = DateTime.Now;    // تاريخ الإنشاء
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;    // تاريخ الإنشاء
         public DateTime? ExpiresAt { get; set; }                   // تاريخ انتهاء الاشتراك (اختياري)
         
         // العلاقات

@@ -2,6 +2,24 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5108/api";
 
+// Helper functions for safe localStorage access
+const getStorageItem = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    console.warn("localStorage not available:", error);
+    return null;
+  }
+};
+
+const removeStorageItem = (key) => {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.warn("Failed to remove from localStorage:", error);
+  }
+};
+
 // إعداد Axios
 const api = axios.create({
   baseURL: API_URL,
@@ -13,7 +31,7 @@ const api = axios.create({
 // Interceptor لإضافة Token لكل الطلبات
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = getStorageItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,7 +48,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid
-      localStorage.removeItem("token");
+      removeStorageItem("token");
       window.location.href = "/login";
     }
     return Promise.reject(error);

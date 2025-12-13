@@ -7,8 +7,12 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// استخدام PostgreSQL بدلاً من SQLite
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? "Host=localhost;Port=5432;Database=kasserpro;Username=postgres;Password=postgres";
+
 builder.Services.AddDbContext<KasserDbContext>(options =>
-    options.UseSqlite("Data Source=database.db"));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

@@ -10,7 +10,7 @@ namespace KasserPro.Api.Models
         public string FullName { get; set; } = string.Empty; // الاسم الكامل
         public string Role { get; set; } = "Cashier";        // الدور: Owner, Manager, Cashier
         public bool IsActive { get; set; } = true;           // هل الحساب نشط؟
-        public DateTime CreatedAt { get; set; } = DateTime.Now; // تاريخ إنشاء الحساب
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // تاريخ إنشاء الحساب
         
         // ربط بالمتجر
         public int StoreId { get; set; }                      // رقم المتجر

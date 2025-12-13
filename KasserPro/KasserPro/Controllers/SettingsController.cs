@@ -1,4 +1,5 @@
 using KasserPro.Api.Data;
+using KasserPro.Api.DTOs;
 using KasserPro.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -92,11 +93,5 @@ namespace KasserPro.Api.Controllers
             return NoContent();
         }
     }
-
-    // DTO للضريبة
-    public class TaxSettingsDto
-    {
-        public bool TaxEnabled { get; set; }
-        public decimal TaxRate { get; set; }
-    }
 }
+

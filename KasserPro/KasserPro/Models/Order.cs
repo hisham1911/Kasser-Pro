@@ -6,7 +6,7 @@ namespace KasserPro.Api.Models
     {
         public int Id { get; set; }
         public string OrderNumber { get; set; } = string.Empty; // هيتولد أوتوماتيك
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public decimal Subtotal { get; set; }                    // المجموع قبل الخصم والضريبة
         public decimal Discount { get; set; } = 0;               // الخصم
         public decimal TaxRate { get; set; } = 0.14m;            // نسبة الضريبة (14% في مصر)
