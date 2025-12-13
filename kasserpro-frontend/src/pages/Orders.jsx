@@ -22,7 +22,7 @@ function Orders() {
   const loadOrders = async (page) => {
     setLoading(true);
     try {
-      const res = await ordersApi.getAll(page);
+      const res = await ordersApi.getAll({ page });
       setOrders(res.data.items);
       setPagination({
         page: res.data.page,
@@ -238,8 +238,8 @@ function Orders() {
             onClick={() => loadOrders(pagination.page - 1)}
             disabled={!pagination.hasPreviousPage}
             className={`px-4 py-2 rounded-lg font-bold ${pagination.hasPreviousPage
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-700 text-gray-500 cursor-not-allowed"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-gray-700 text-gray-500 cursor-not-allowed"
               }`}
           >
             السابق
@@ -251,8 +251,8 @@ function Orders() {
             onClick={() => loadOrders(pagination.page + 1)}
             disabled={!pagination.hasNextPage}
             className={`px-4 py-2 rounded-lg font-bold ${pagination.hasNextPage
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-700 text-gray-500 cursor-not-allowed"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-gray-700 text-gray-500 cursor-not-allowed"
               }`}
           >
             التالي
