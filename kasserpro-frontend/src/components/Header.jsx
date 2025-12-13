@@ -52,7 +52,9 @@ function Header() {
           <span className="text-3xl">💎</span>
           <div>
             <h1 className="text-xl font-black text-white">KasserPro</h1>
-            <p className="text-xs text-gray-500">{user?.storeName || "نظام نقاط البيع"}</p>
+            <p className="text-xs text-gray-500">
+              {user?.storeName || "نظام نقاط البيع"}
+            </p>
           </div>
         </div>
 
@@ -80,14 +82,18 @@ function Header() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
             <div className="text-left">
-              <p className="text-sm font-bold text-white">{user?.fullName || user?.username}</p>
-              <p className="text-xs text-gray-500">{getRoleDisplay(user?.role)}</p>
+              <p className="text-sm font-bold text-white">
+                {user?.fullName || user?.username}
+              </p>
+              <p className="text-xs text-gray-500">
+                {getRoleDisplay(user?.role)}
+              </p>
             </div>
             <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
               <span className="text-white font-bold">{getInitial()}</span>
             </div>
           </div>
-          
+
           {/* Logout Button */}
           <button
             onClick={handleLogout}
