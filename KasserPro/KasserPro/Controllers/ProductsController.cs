@@ -1,5 +1,6 @@
 ﻿using KasserPro.Api.Data;
 using KasserPro.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,8 @@ namespace KasserPro.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    [Authorize]
+    public class ProductsController : BaseApiController
     {
         private readonly KasserDbContext _context;
 
@@ -24,8 +26,11 @@ namespace KasserPro.Api.Controllers
             [FromQuery] bool? isAvailable = null,
             [FromQuery] string? search = null)
         {
+            var storeId = GetStoreId();
+            
             var query = _context.Products
-                .Include(p => p.Category) // جلب معلومات التصنيف
+                .Include(p => p.Category)
+                .Where(p => p.StoreId == storeId) // فلترة بالمتجر
                 .AsQueryable();
 
             // فلترة بالتصنيف
@@ -72,9 +77,11 @@ namespace KasserPro.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
+            var storeId = GetStoreId();
+            
             var product = await _context.Products
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id && p.StoreId == storeId);
 
             if (product == null)
             {
@@ -89,6 +96,9 @@ namespace KasserPro.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct(Product product)
         {
+            var storeId = GetStoreId();
+            product.StoreId = storeId;
+            
             // لا يمكن إنشاء منتج متاح بمخزون صفر
             if (product.IsAvailable && product.Stock <= 0)
             {
@@ -99,7 +109,7 @@ namespace KasserPro.Api.Controllers
             if (product.CategoryId.HasValue)
             {
                 var categoryExists = await _context.Categories
-                    .AnyAsync(c => c.Id == product.CategoryId.Value);
+                    .AnyAsync(c => c.Id == product.CategoryId.Value && c.StoreId == storeId);
 
                 if (!categoryExists)
                 {
@@ -107,9 +117,9 @@ namespace KasserPro.Api.Controllers
                 }
             }
 
-            // التحقق من عدم تكرار الاسم
+            // التحقق من عدم تكرار الاسم في نفس المتجر
             var nameExists = await _context.Products
-                .AnyAsync(p => p.Name.ToLower() == product.Name.ToLower());
+                .AnyAsync(p => p.Name.ToLower() == product.Name.ToLower() && p.StoreId == storeId);
 
             if (nameExists)
             {
@@ -127,6 +137,8 @@ namespace KasserPro.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, Product product)
         {
+            var storeId = GetStoreId();
+            
             if (id != product.Id)
             {
                 return BadRequest(new { message = "رقم الصنف غير متطابق" });
@@ -138,9 +150,9 @@ namespace KasserPro.Api.Controllers
                 return BadRequest(new { message = "لا يمكن تفعيل منتج مخزونه صفر" });
             }
 
-            // التحقق من وجود الصنف
-            var exists = await _context.Products.AnyAsync(p => p.Id == id);
-            if (!exists)
+            // التحقق من وجود الصنف في نفس المتجر
+            var existingProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.StoreId == storeId);
+            if (existingProduct == null)
             {
                 return NotFound(new { message = "الصنف غير موجود" });
             }
@@ -149,7 +161,7 @@ namespace KasserPro.Api.Controllers
             if (product.CategoryId.HasValue)
             {
                 var categoryExists = await _context.Categories
-                    .AnyAsync(c => c.Id == product.CategoryId.Value);
+                    .AnyAsync(c => c.Id == product.CategoryId.Value && c.StoreId == storeId);
 
                 if (!categoryExists)
                 {
@@ -157,16 +169,22 @@ namespace KasserPro.Api.Controllers
                 }
             }
 
-            // التحقق من عدم تكرار الاسم
+            // التحقق من عدم تكرار الاسم في نفس المتجر
             var duplicate = await _context.Products
-                .AnyAsync(p => p.Name.ToLower() == product.Name.ToLower() && p.Id != id);
+                .AnyAsync(p => p.Name.ToLower() == product.Name.ToLower() && p.Id != id && p.StoreId == storeId);
 
             if (duplicate)
             {
                 return BadRequest(new { message = "يوجد صنف آخر بنفس الاسم" });
             }
 
-            _context.Entry(product).State = EntityState.Modified;
+            // تحديث الحقول
+            existingProduct.Name = product.Name;
+            existingProduct.Price = product.Price;
+            existingProduct.Stock = product.Stock;
+            existingProduct.IsAvailable = product.IsAvailable;
+            existingProduct.ImageUrl = product.ImageUrl;
+            existingProduct.CategoryId = product.CategoryId;
 
             try
             {
@@ -185,7 +203,8 @@ namespace KasserPro.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var storeId = GetStoreId();
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.StoreId == storeId);
 
             if (product == null)
             {
@@ -211,7 +230,8 @@ namespace KasserPro.Api.Controllers
         [HttpPatch("{id}/stock")]
         public async Task<IActionResult> UpdateStock(int id, [FromBody] int stock)
         {
-            var product = await _context.Products.FindAsync(id);
+            var storeId = GetStoreId();
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.StoreId == storeId);
 
             if (product == null)
             {
@@ -236,7 +256,8 @@ namespace KasserPro.Api.Controllers
         [HttpPatch("{id}/availability")]
         public async Task<IActionResult> UpdateAvailability(int id, [FromBody] bool isAvailable)
         {
-            var product = await _context.Products.FindAsync(id);
+            var storeId = GetStoreId();
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && p.StoreId == storeId);
 
             if (product == null)
             {

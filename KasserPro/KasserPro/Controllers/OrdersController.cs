@@ -1,6 +1,7 @@
 ﻿using KasserPro.Api.Data;
 using KasserPro.Api.Models;
 using KasserPro.Api.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,8 @@ namespace KasserPro.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    [Authorize]
+    public class OrdersController : BaseApiController
     {
         private readonly KasserDbContext _context;
 
@@ -21,9 +23,12 @@ namespace KasserPro.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
         {
+            var storeId = GetStoreId();
+            
             var orders = await _context.Orders
                 .Include(o => o.Items)
                 .ThenInclude(oi => oi.Product)
+                .Where(o => o.StoreId == storeId)
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
 
@@ -34,10 +39,12 @@ namespace KasserPro.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> CreateOrder(CreateOrderDto dto)
         {
+            var storeId = GetStoreId();
+            
             // التحقق من توفر المخزون أولاً
             foreach (var item in dto.Items)
             {
-                var product = await _context.Products.FindAsync(item.ProductId);
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.ProductId && p.StoreId == storeId);
                 if (product == null)
                 {
                     return BadRequest(new { message = $"المنتج رقم {item.ProductId} غير موجود" });
@@ -55,7 +62,7 @@ namespace KasserPro.Api.Controllers
             // توليد رقم الطلب تلقائي (20251208-0001)
             var today = DateTime.Today.ToString("yyyyMMdd");
             var lastOrderToday = await _context.Orders
-                .Where(o => o.OrderNumber.StartsWith(today))
+                .Where(o => o.OrderNumber.StartsWith(today) && o.StoreId == storeId)
                 .OrderByDescending(o => o.Id)
                 .FirstOrDefaultAsync();
 
@@ -64,13 +71,19 @@ namespace KasserPro.Api.Controllers
 
             string orderNumber = $"{today}-{nextNumber:D4}";
 
+            // جلب إعدادات الضريبة للمتجر
+            var settings = await _context.AppSettings.FirstOrDefaultAsync(s => s.StoreId == storeId);
+            var taxRate = (settings?.TaxEnabled == true) ? (settings?.TaxRate ?? 14m) / 100m : 0m;
+
             var order = new Order
             {
                 OrderNumber = orderNumber,
                 CreatedAt = DateTime.Now,
                 Subtotal = dto.Items.Sum(i => i.PriceAtTime * i.Quantity),
                 Discount = dto.Discount,
+                TaxRate = taxRate,
                 PaymentMethod = dto.PaymentMethod,
+                StoreId = storeId,
                 Items = dto.Items.Select(i => new OrderItem
                 {
                     ProductId = i.ProductId,
@@ -84,7 +97,7 @@ namespace KasserPro.Api.Controllers
             // تحديث المخزون
             foreach (var item in dto.Items)
             {
-                var product = await _context.Products.FindAsync(item.ProductId);
+                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.ProductId && p.StoreId == storeId);
                 if (product != null)
                 {
                     product.Stock -= item.Quantity;
@@ -113,10 +126,12 @@ namespace KasserPro.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetOrder(int id)
         {
+            var storeId = GetStoreId();
+            
             var order = await _context.Orders
                 .Include(o => o.Items)
                 .ThenInclude(oi => oi.Product)
-                .FirstOrDefaultAsync(o => o.Id == id);
+                .FirstOrDefaultAsync(o => o.Id == id && o.StoreId == storeId);
 
             if (order == null) return NotFound();
             return MapToDto(order);
@@ -124,14 +139,21 @@ namespace KasserPro.Api.Controllers
         [HttpGet("{id}/print")]
         public async Task<IActionResult> PrintOrder(int id)
         {
+            var storeId = GetStoreId();
+            
             var order = await _context.Orders
                 .Include(o => o.Items)
                 .ThenInclude(oi => oi.Product)
-                .FirstOrDefaultAsync(o => o.Id == id);
+                .FirstOrDefaultAsync(o => o.Id == id && o.StoreId == storeId);
 
             if (order == null) return NotFound();
+            
+            // جلب اسم المتجر من الإعدادات
+            var settings = await _context.AppSettings.FirstOrDefaultAsync(s => s.StoreId == storeId);
+            var storeName = settings?.StoreName ?? "KasserPro";
+            var currency = settings?.Currency ?? "ج.م";
 
-            var receipt = "       مطعمك الحلو\n";
+            var receipt = $"       {storeName}\n";
             receipt += "========================\n";
             receipt += $"فاتورة رقم: {order.OrderNumber}\n";
             receipt += $"التاريخ: {order.CreatedAt:yyyy-MM-dd HH:mm}\n";
@@ -140,13 +162,17 @@ namespace KasserPro.Api.Controllers
             foreach (var item in order.Items)
             {
                 var productName = item.Product?.Name ?? "منتج";
-                receipt += $"{productName} x{item.Quantity}     {item.PriceAtTime * item.Quantity} ج.م\n";
+                receipt += $"{productName} x{item.Quantity}     {item.PriceAtTime * item.Quantity} {currency}\n";
             }
 
             receipt += "------------------------\n";
-            receipt += $"الإجمالي: {order.Subtotal} ج.م\n";
-            receipt += $"الخصم: {order.Discount} ج.م\n";
-            receipt += $"الصافي: {order.Total} ج.م\n";
+            receipt += $"الإجمالي: {order.Subtotal} {currency}\n";
+            receipt += $"الخصم: {order.Discount} {currency}\n";
+            if (order.TaxAmount > 0)
+            {
+                receipt += $"الضريبة: {order.TaxAmount} {currency}\n";
+            }
+            receipt += $"الصافي: {order.Total} {currency}\n";
             receipt += $"طريقة الدفع: {order.PaymentMethod}\n";
             receipt += "========================\n";
             receipt += "     شكرا لزيارتك ❤️\n\n\n";

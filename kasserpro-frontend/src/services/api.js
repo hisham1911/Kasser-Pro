@@ -10,6 +10,49 @@ const api = axios.create({
   },
 });
 
+// Interceptor لإضافة Token لكل الطلبات
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Interceptor للتعامل مع أخطاء 401
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
+
+// ============ Auth API ============
+export const authApi = {
+  // تسجيل الدخول
+  login: (username, password) =>
+    api.post("/auth/login", { username, password }),
+
+  // تسجيل متجر جديد
+  register: (data) => api.post("/auth/register", data),
+
+  // إضافة مستخدم للمتجر
+  addUser: (data) => api.post("/auth/add-user", data),
+
+  // معلومات المستخدم الحالي
+  me: () => api.get("/auth/me"),
+};
+
 // ============ Categories API ============
 export const categoriesApi = {
   // جلب كل التصنيفات

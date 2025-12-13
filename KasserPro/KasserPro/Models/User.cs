@@ -8,9 +8,14 @@ namespace KasserPro.Api.Models
         public string Username { get; set; } = string.Empty; // اسم المستخدم للدخول
         public string PasswordHash { get; set; } = string.Empty; // كلمة المرور (مشفرة)
         public string FullName { get; set; } = string.Empty; // الاسم الكامل
-        public string Role { get; set; } = "Cashier";        // الدور: Admin, Cashier, Manager
+        public string Role { get; set; } = "Cashier";        // الدور: Owner, Manager, Cashier
         public bool IsActive { get; set; } = true;           // هل الحساب نشط؟
         public DateTime CreatedAt { get; set; } = DateTime.Now; // تاريخ إنشاء الحساب
+        
+        // ربط بالمتجر
+        public int StoreId { get; set; }                      // رقم المتجر
+        [JsonIgnore]
+        public Store? Store { get; set; }                     // المتجر
         
         // علاقة: مستخدم واحد ممكن يعمل طلبات كتير
         [JsonIgnore]

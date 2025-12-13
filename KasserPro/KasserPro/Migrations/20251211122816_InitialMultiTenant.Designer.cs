@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KasserPro.Migrations
 {
     [DbContext(typeof(KasserDbContext))]
-    [Migration("20251211112741_AddAppSettings")]
-    partial class AddAppSettings
+    [Migration("20251211122816_InitialMultiTenant")]
+    partial class InitialMultiTenant
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,9 @@ namespace KasserPro.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("StoreName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -42,6 +45,8 @@ namespace KasserPro.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StoreId");
+
                     b.ToTable("AppSettings");
 
                     b.HasData(
@@ -49,6 +54,7 @@ namespace KasserPro.Migrations
                         {
                             Id = 1,
                             Currency = "ج.م",
+                            StoreId = 1,
                             StoreName = "KasserPro",
                             TaxEnabled = true,
                             TaxRate = 14m
@@ -71,9 +77,14 @@ namespace KasserPro.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Categories");
 
@@ -83,28 +94,32 @@ namespace KasserPro.Migrations
                             Id = 1,
                             Color = "#3B82F6",
                             Icon = "🥤",
-                            Name = "مشروبات"
+                            Name = "مشروبات",
+                            StoreId = 1
                         },
                         new
                         {
                             Id = 2,
                             Color = "#EF4444",
                             Icon = "🍔",
-                            Name = "وجبات"
+                            Name = "وجبات",
+                            StoreId = 1
                         },
                         new
                         {
                             Id = 3,
                             Color = "#F59E0B",
                             Icon = "🍰",
-                            Name = "حلويات"
+                            Name = "حلويات",
+                            StoreId = 1
                         },
                         new
                         {
                             Id = 4,
                             Color = "#10B981",
                             Icon = "🍟",
-                            Name = "مقبلات"
+                            Name = "مقبلات",
+                            StoreId = 1
                         });
                 });
 
@@ -132,6 +147,9 @@ namespace KasserPro.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("Subtotal")
                         .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
@@ -149,6 +167,8 @@ namespace KasserPro.Migrations
 
                     b.HasIndex("OrderNumber")
                         .IsUnique();
+
+                    b.HasIndex("StoreId");
 
                     b.HasIndex("UserId");
 
@@ -208,9 +228,14 @@ namespace KasserPro.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Products");
 
@@ -222,7 +247,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "كولا",
                             Price = 15.00m,
-                            Stock = 100
+                            Stock = 100,
+                            StoreId = 1
                         },
                         new
                         {
@@ -231,7 +257,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "عصير برتقال",
                             Price = 20.00m,
-                            Stock = 50
+                            Stock = 50,
+                            StoreId = 1
                         },
                         new
                         {
@@ -240,7 +267,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "مياه معدنية",
                             Price = 10.00m,
-                            Stock = 200
+                            Stock = 200,
+                            StoreId = 1
                         },
                         new
                         {
@@ -249,7 +277,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "برجر لحم",
                             Price = 50.00m,
-                            Stock = 30
+                            Stock = 30,
+                            StoreId = 1
                         },
                         new
                         {
@@ -258,7 +287,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "برجر دجاج",
                             Price = 45.00m,
-                            Stock = 35
+                            Stock = 35,
+                            StoreId = 1
                         },
                         new
                         {
@@ -267,7 +297,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "بيتزا مارجريتا",
                             Price = 80.00m,
-                            Stock = 20
+                            Stock = 20,
+                            StoreId = 1
                         },
                         new
                         {
@@ -276,7 +307,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "كيكة شوكولاتة",
                             Price = 25.00m,
-                            Stock = 15
+                            Stock = 15,
+                            StoreId = 1
                         },
                         new
                         {
@@ -285,7 +317,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "آيس كريم",
                             Price = 30.00m,
-                            Stock = 40
+                            Stock = 40,
+                            StoreId = 1
                         },
                         new
                         {
@@ -294,7 +327,8 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "بطاطس",
                             Price = 20.00m,
-                            Stock = 60
+                            Stock = 60,
+                            StoreId = 1
                         },
                         new
                         {
@@ -303,7 +337,52 @@ namespace KasserPro.Migrations
                             IsAvailable = true,
                             Name = "أصابع موتزاريلا",
                             Price = 35.00m,
-                            Stock = 25
+                            Stock = 25,
+                            StoreId = 1
+                        });
+                });
+
+            modelBuilder.Entity("KasserPro.Api.Models.Store", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "القاهرة، مصر",
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsActive = true,
+                            Name = "متجر تجريبي",
+                            Phone = "01000000000"
                         });
                 });
 
@@ -331,11 +410,16 @@ namespace KasserPro.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("StoreId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -350,17 +434,48 @@ namespace KasserPro.Migrations
                             FullName = "المدير العام",
                             IsActive = true,
                             PasswordHash = "$2a$11$5EqkFvM3Y8LZZ0YHqVn4ZeOxNc7DWYpCvLZU3p6qWGNJxJ8HK9EzS",
-                            Role = "Admin",
+                            Role = "Owner",
+                            StoreId = 1,
                             Username = "admin"
                         });
                 });
 
+            modelBuilder.Entity("KasserPro.Api.Models.AppSettings", b =>
+                {
+                    b.HasOne("KasserPro.Api.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("KasserPro.Api.Models.Category", b =>
+                {
+                    b.HasOne("KasserPro.Api.Models.Store", "Store")
+                        .WithMany("Categories")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+                });
+
             modelBuilder.Entity("KasserPro.Api.Models.Order", b =>
                 {
+                    b.HasOne("KasserPro.Api.Models.Store", "Store")
+                        .WithMany("Orders")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("KasserPro.Api.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Store");
 
                     b.Navigation("User");
                 });
@@ -391,7 +506,26 @@ namespace KasserPro.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("KasserPro.Api.Models.Store", "Store")
+                        .WithMany("Products")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Store");
+                });
+
+            modelBuilder.Entity("KasserPro.Api.Models.User", b =>
+                {
+                    b.HasOne("KasserPro.Api.Models.Store", "Store")
+                        .WithMany("Users")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
                 });
 
             modelBuilder.Entity("KasserPro.Api.Models.Category", b =>
@@ -407,6 +541,17 @@ namespace KasserPro.Migrations
             modelBuilder.Entity("KasserPro.Api.Models.Product", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("KasserPro.Api.Models.Store", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("KasserPro.Api.Models.User", b =>

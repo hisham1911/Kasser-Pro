@@ -11,6 +11,11 @@ namespace KasserPro.Api.Models
         public string? ImageUrl { get; set; }
         public int Stock { get; set; } = 0;     // الكمية المتوفرة في المخزون
         public bool IsAvailable { get; set; } = true; // هل الصنف متاح للبيع؟
+        
+        // ربط بالمتجر
+        public int StoreId { get; set; }
+        [JsonIgnore]
+        public Store? Store { get; set; }
 
         // العلاقات
         [JsonIgnore]

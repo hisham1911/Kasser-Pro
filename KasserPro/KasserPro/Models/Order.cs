@@ -15,6 +15,11 @@ namespace KasserPro.Api.Models
         public string PaymentMethod { get; set; } = "Cash";      // Cash, Card, Wallet
         public int? UserId { get; set; }                         // رقم الكاشير اللي عمل الطلب (Foreign Key)
         public string? Notes { get; set; }                       // ملاحظات على الطلب
+        
+        // ربط بالمتجر
+        public int StoreId { get; set; }
+        [JsonIgnore]
+        public Store? Store { get; set; }
 
         // العلاقات
         [JsonIgnore]

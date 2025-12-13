@@ -1,5 +1,6 @@
 using KasserPro.Api.Data;
 using KasserPro.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,8 @@ namespace KasserPro.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SettingsController : ControllerBase
+    [Authorize]
+    public class SettingsController : BaseApiController
     {
         private readonly KasserDbContext _context;
 
@@ -21,18 +23,19 @@ namespace KasserPro.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<AppSettings>> GetSettings()
         {
-            var settings = await _context.AppSettings.FirstOrDefaultAsync();
+            var storeId = GetStoreId();
+            var settings = await _context.AppSettings.FirstOrDefaultAsync(s => s.StoreId == storeId);
             
             if (settings == null)
             {
                 // إنشاء إعدادات افتراضية إذا لم تكن موجودة
                 settings = new AppSettings
                 {
-                    Id = 1,
                     TaxEnabled = true,
                     TaxRate = 14m,
                     StoreName = "KasserPro",
-                    Currency = "ج.م"
+                    Currency = "ج.م",
+                    StoreId = storeId
                 };
                 _context.AppSettings.Add(settings);
                 await _context.SaveChangesAsync();
@@ -46,11 +49,12 @@ namespace KasserPro.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateSettings(AppSettings newSettings)
         {
-            var settings = await _context.AppSettings.FirstOrDefaultAsync();
+            var storeId = GetStoreId();
+            var settings = await _context.AppSettings.FirstOrDefaultAsync(s => s.StoreId == storeId);
 
             if (settings == null)
             {
-                newSettings.Id = 1;
+                newSettings.StoreId = storeId;
                 _context.AppSettings.Add(newSettings);
             }
             else
@@ -71,11 +75,12 @@ namespace KasserPro.Api.Controllers
         [HttpPatch("tax")]
         public async Task<IActionResult> UpdateTaxSettings([FromBody] TaxSettingsDto dto)
         {
-            var settings = await _context.AppSettings.FirstOrDefaultAsync();
+            var storeId = GetStoreId();
+            var settings = await _context.AppSettings.FirstOrDefaultAsync(s => s.StoreId == storeId);
 
             if (settings == null)
             {
-                settings = new AppSettings { Id = 1 };
+                settings = new AppSettings { StoreId = storeId };
                 _context.AppSettings.Add(settings);
             }
 
