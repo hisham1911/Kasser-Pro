@@ -19,20 +19,36 @@ namespace KasserPro.Api.Controllers
             _context = context;
         }
 
-        // جلب كل الطلبات
+        // جلب كل الطلبات مع Pagination
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+        public async Task<ActionResult<PagedResult<OrderDto>>> GetOrders(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20)
         {
             var storeId = GetStoreId();
             
-            var orders = await _context.Orders
+            var query = _context.Orders
                 .Include(o => o.Items)
                 .ThenInclude(oi => oi.Product)
                 .Where(o => o.StoreId == storeId)
-                .OrderByDescending(o => o.CreatedAt)
+                .OrderByDescending(o => o.CreatedAt);
+
+            var totalCount = await query.CountAsync();
+            
+            var orders = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
-            return orders.Select(o => MapToDto(o)).ToList();
+            var result = new PagedResult<OrderDto>
+            {
+                Items = orders.Select(o => MapToDto(o)).ToList(),
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize
+            };
+
+            return Ok(result);
         }
 
         // إنشاء طلب جديد
@@ -73,9 +89,10 @@ namespace KasserPro.Api.Controllers
                 }
 
                 // توليد رقم الطلب تلقائي (20251208-0001)
+                // يجب البحث في كل الطلبات لضمان عدم تكرار الرقم لأن OrderNumber فريد عالمياً
                 var today = DateTime.UtcNow.ToString("yyyyMMdd");
                 var lastOrderToday = await _context.Orders
-                    .Where(o => o.OrderNumber.StartsWith(today) && o.StoreId == storeId)
+                    .Where(o => o.OrderNumber.StartsWith(today))
                     .OrderByDescending(o => o.Id)
                     .FirstOrDefaultAsync();
 
@@ -150,6 +167,7 @@ namespace KasserPro.Api.Controllers
                 return StatusCode(500, new { 
                     message = "حدث خطأ أثناء إنشاء الطلب", 
                     error = ex.Message,
+                    innerError = ex.InnerException?.Message,
                     details = ex.StackTrace
                 });
             }

@@ -156,7 +156,7 @@ namespace KasserPro.Api.Data
                 { 
                     Id = 1, 
                     Username = "admin", 
-                    PasswordHash = "$2a$11$5EqkFvM3Y8LZZ0YHqVn4ZeOxNc7DWYpCvLZU3p6qWGNJxJ8HK9EzS", // admin123
+                    PasswordHash = "$2a$11$2aKbcflBGE.mC9RZwgYX3eBqlFqjkY2w8omg9m1mWkprp.cOl0dkG", // admin123
                     FullName = "المدير العام",
                     Role = "Owner",
                     IsActive = true,

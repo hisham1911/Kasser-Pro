@@ -7,16 +7,30 @@ function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+    totalCount: 0,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
 
   useEffect(() => {
-    loadOrders();
+    loadOrders(1);
   }, []);
 
-  const loadOrders = async () => {
+  const loadOrders = async (page) => {
     setLoading(true);
     try {
-      const res = await ordersApi.getAll();
-      setOrders(res.data);
+      const res = await ordersApi.getAll(page);
+      setOrders(res.data.items);
+      setPagination({
+        page: res.data.page,
+        totalPages: res.data.totalPages,
+        totalCount: res.data.totalCount,
+        hasPreviousPage: res.data.hasPreviousPage,
+        hasNextPage: res.data.hasNextPage,
+      });
     } catch {
       toast.error("فشل تحميل الطلبات");
     } finally {
@@ -72,37 +86,36 @@ function Orders() {
           </div>
           <div class="line"></div>
           ${order.items
-            ?.map(
-              (item) => `
+          ?.map(
+            (item) => `
             <div class="item">
               <span>${item.product?.name || "منتج"} × ${item.quantity}</span>
               <span>${(item.quantity * item.priceAtTime).toFixed(0)} ج.م</span>
             </div>
           `
-            )
-            .join("")}
+          )
+          .join("")}
           <div class="line"></div>
           <div class="item"><span>المجموع</span><span>${order.subtotal?.toFixed(
             2
           )} ج.م</span></div>
-          ${
-            order.discount > 0
-              ? `<div class="item"><span>الخصم</span><span>-${order.discount?.toFixed(
-                  2
-                )} ج.م</span></div>`
-              : ""
-          }
-          <div class="item"><span>الضريبة</span><span>${order.taxAmount?.toFixed(
+          ${order.discount > 0
+          ? `<div class="item"><span>الخصم</span><span>-${order.discount?.toFixed(
             2
-          )} ج.م</span></div>
+          )} ج.م</span></div>`
+          : ""
+        }
+          <div class="item"><span>الضريبة</span><span>${order.taxAmount?.toFixed(
+          2
+        )} ج.م</span></div>
           <div class="line"></div>
           <div class="item total"><span>الإجمالي</span><span>${order.total?.toFixed(
-            2
-          )} ج.م</span></div>
+          2
+        )} ج.م</span></div>
           <div class="line"></div>
           <p style="text-align:center">${getPaymentMethodLabel(
-            order.paymentMethod
-          )}</p>
+          order.paymentMethod
+        )}</p>
           <p style="text-align:center; margin-top:20px">شكراً لزيارتكم ✨</p>
         </body>
         </html>
@@ -125,7 +138,7 @@ function Orders() {
             <p className="text-gray-400">عرض وإدارة جميع الفواتير</p>
           </div>
           <button
-            onClick={loadOrders}
+            onClick={() => loadOrders(pagination.page)}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700"
           >
             🔄 تحديث
@@ -217,6 +230,35 @@ function Orders() {
           </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {!loading && orders.length > 0 && (
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => loadOrders(pagination.page - 1)}
+            disabled={!pagination.hasPreviousPage}
+            className={`px-4 py-2 rounded-lg font-bold ${pagination.hasPreviousPage
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-gray-700 text-gray-500 cursor-not-allowed"
+              }`}
+          >
+            السابق
+          </button>
+          <span className="text-gray-400">
+            صفحة {pagination.page} من {pagination.totalPages}
+          </span>
+          <button
+            onClick={() => loadOrders(pagination.page + 1)}
+            disabled={!pagination.hasNextPage}
+            className={`px-4 py-2 rounded-lg font-bold ${pagination.hasNextPage
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-gray-700 text-gray-500 cursor-not-allowed"
+              }`}
+          >
+            التالي
+          </button>
+        </div>
+      )}
 
       {/* Modal تفاصيل الطلب */}
       {selectedOrder && (

@@ -46,6 +46,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Log error to console for debugging
+    console.error("❌ API Error:", {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
+
     if (error.response?.status === 401) {
       // Token expired or invalid
       removeStorageItem("token");
@@ -123,8 +132,9 @@ export const productsApi = {
 
 // ============ Orders API ============
 export const ordersApi = {
-  // جلب كل الطلبات
-  getAll: () => api.get("/orders"),
+  // جلب كل الطلبات مع Pagination
+  getAll: (page = 1, pageSize = 20) =>
+    api.get(`/orders?page=${page}&pageSize=${pageSize}`),
 
   // جلب طلب واحد
   getById: (id) => api.get(`/orders/${id}`),

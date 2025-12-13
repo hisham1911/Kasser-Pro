@@ -84,9 +84,12 @@ namespace KasserPro.Tests
             // Act
             var result = await _controller.GetOrders();
 
-            // Assert - GetOrders returns list directly in Value property
-            result.Value.Should().NotBeNull();
-            result.Value.Should().BeEmpty();
+            // Assert - GetOrders returns PagedResult wrapped in OkObjectResult
+            var okResult = result.Result as OkObjectResult;
+            okResult.Should().NotBeNull();
+            var pagedResult = okResult!.Value as PagedResult<OrderDto>;
+            pagedResult.Should().NotBeNull();
+            pagedResult!.Items.Should().BeEmpty();
         }
 
         [Fact]
