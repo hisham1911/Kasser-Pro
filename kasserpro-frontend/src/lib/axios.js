@@ -24,12 +24,36 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem("token");
-            // Only redirect if not already on login page to avoid reload loop/refresh
-            if (!window.location.pathname.includes("/login")) {
-                window.location.href = "/login";
+        if (error.response) {
+            // Map status codes to friendly Arabic messages
+            switch (error.response.status) {
+                case 400:
+                    error.message = error.response.data?.message || "بيانات غير صالحة";
+                    break;
+                case 401:
+                    error.message = "انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى";
+                    localStorage.removeItem("token");
+                    if (!window.location.pathname.includes("/login")) {
+                        window.location.href = "/login";
+                    }
+                    break;
+                case 403:
+                    error.message = "غير مصرح لك بالقيام بهذا الإجراء";
+                    break;
+                case 404:
+                    error.message = "المورد غير موجود";
+                    break;
+                case 500:
+                    error.message = "حدث خطأ في الخادم، يرجى المحاولة لاحقاً";
+                    break;
+                default:
+                    error.message = "حدث خطأ غير متوقع";
             }
+        } else if (error.request) {
+            // Network error
+            error.message = "فشل الاتصال بالخادم، يرجى التحقق من الإنترنت";
+        } else {
+            error.message = "حدث خطأ غير متوقع";
         }
         return Promise.reject(error);
     }

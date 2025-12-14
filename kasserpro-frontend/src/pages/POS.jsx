@@ -93,7 +93,7 @@ function POS() {
               </div>
             </div>
           ) : (
-            <div className="flex flex-wrap gap-4 content-start pb-10">
+            <div className="flex flex-wrap gap-4 content-start p-2 pb-10">
               {products?.map((p) => {
                 const cartItem = cart.find((x) => x.id === p.id);
                 const cartQty = cartItem ? cartItem.qty : 0;
