@@ -74,8 +74,8 @@ function Settings() {
     try {
       await settingsApi.updateTax({ taxEnabled: enabled, taxRate: rate });
       toast.success("تم حفظ الإعدادات");
-    } catch {
-      toast.error("فشل حفظ الإعدادات");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "فشل حفظ الإعدادات");
     } finally {
       setSavingTax(false);
     }
@@ -138,8 +138,8 @@ function Settings() {
       }
       setShowModal(false);
       loadCategories();
-    } catch {
-      toast.error("فشل حفظ التصنيف");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "فشل حفظ التصنيف");
     }
   };
 
@@ -150,8 +150,8 @@ function Settings() {
       await categoriesApi.delete(category.id);
       toast.success("تم حذف التصنيف");
       loadCategories();
-    } catch {
-      toast.error("لا يمكن حذف التصنيف - قد يحتوي على منتجات");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "لا يمكن حذف التصنيف - قد يحتوي على منتجات");
     }
   };
 
@@ -245,14 +245,12 @@ function Settings() {
               <button
                 onClick={() => handleTaxToggle(!taxEnabled)}
                 disabled={savingTax}
-                className={`relative w-14 h-7 rounded-full transition-colors ${
-                  taxEnabled ? "bg-green-600" : "bg-gray-600"
-                } ${savingTax ? "opacity-50" : ""}`}
+                className={`relative w-14 h-7 rounded-full transition-colors ${taxEnabled ? "bg-green-600" : "bg-gray-600"
+                  } ${savingTax ? "opacity-50" : ""}`}
               >
                 <span
-                  className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all ${
-                    taxEnabled ? "right-1" : "right-8"
-                  }`}
+                  className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all ${taxEnabled ? "right-1" : "right-8"
+                    }`}
                 />
               </button>
             </div>
@@ -346,11 +344,10 @@ function Settings() {
                       key={color}
                       type="button"
                       onClick={() => setFormData({ ...formData, color })}
-                      className={`w-8 h-8 rounded-full border-2 transition-all ${
-                        formData.color === color
+                      className={`w-8 h-8 rounded-full border-2 transition-all ${formData.color === color
                           ? "border-white scale-110"
                           : "border-transparent"
-                      }`}
+                        }`}
                       style={{ background: color }}
                     />
                   ))}
@@ -367,11 +364,10 @@ function Settings() {
                       key={icon}
                       type="button"
                       onClick={() => setFormData({ ...formData, icon })}
-                      className={`w-10 h-10 rounded-lg text-xl flex items-center justify-center transition-all ${
-                        formData.icon === icon
+                      className={`w-10 h-10 rounded-lg text-xl flex items-center justify-center transition-all ${formData.icon === icon
                           ? "bg-blue-600 border-2 border-blue-400"
                           : "bg-gray-700 border border-gray-600"
-                      }`}
+                        }`}
                     >
                       {icon}
                     </button>

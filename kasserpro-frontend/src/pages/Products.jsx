@@ -99,8 +99,8 @@ function Products() {
       }
       setShowModal(false);
       loadData();
-    } catch {
-      toast.error("فشل حفظ المنتج");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "فشل حفظ المنتج");
     }
   };
 
@@ -111,8 +111,8 @@ function Products() {
       await productsApi.delete(product.id);
       toast.success("تم حذف المنتج");
       loadData();
-    } catch {
-      toast.error("لا يمكن حذف المنتج - قد يكون مرتبط بطلبات");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "لا يمكن حذف المنتج - قد يكون مرتبط بطلبات");
     }
   };
 
@@ -128,8 +128,8 @@ function Products() {
         product.isAvailable ? "تم إيقاف المنتج" : "تم تفعيل المنتج"
       );
       loadData();
-    } catch {
-      toast.error("فشل تحديث الحالة");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "فشل تحديث الحالة");
     }
   };
 
@@ -144,8 +144,8 @@ function Products() {
       toast.success("تم تحديث المخزون");
       setStockUpdate({ productId: null, value: "" });
       loadData();
-    } catch {
-      toast.error("فشل تحديث المخزون");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "فشل تحديث المخزون");
     }
   };
 
@@ -206,9 +206,8 @@ function Products() {
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className={`bg-gray-800 rounded-xl p-4 border border-gray-700 ${
-                  !product.isAvailable ? "opacity-60" : ""
-                }`}
+                className={`bg-gray-800 rounded-xl p-4 border border-gray-700 ${!product.isAvailable ? "opacity-60" : ""
+                  }`}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex gap-3">
@@ -229,11 +228,10 @@ function Products() {
                   </div>
                   <button
                     onClick={() => toggleAvailability(product)}
-                    className={`text-xs font-bold px-2 py-1 rounded ${
-                      product.isAvailable
+                    className={`text-xs font-bold px-2 py-1 rounded ${product.isAvailable
                         ? "bg-green-600/20 text-green-400"
                         : "bg-red-600/20 text-red-400"
-                    }`}
+                      }`}
                   >
                     {product.isAvailable ? "متاح" : "موقف"}
                   </button>

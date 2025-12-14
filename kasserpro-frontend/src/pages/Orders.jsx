@@ -31,8 +31,8 @@ function Orders() {
         hasPreviousPage: res.data.hasPreviousPage,
         hasNextPage: res.data.hasNextPage,
       });
-    } catch {
-      toast.error("فشل تحميل الطلبات");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "فشل تحميل الطلبات");
     } finally {
       setLoading(false);
     }
