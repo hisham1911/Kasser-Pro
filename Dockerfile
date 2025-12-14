@@ -2,18 +2,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copy solution and project files
-COPY KasserPro/KasserPro.sln ./KasserPro/
-COPY KasserPro/KasserPro/KasserPro.csproj ./KasserPro/KasserPro/
-
-# Restore dependencies
-WORKDIR /src/KasserPro
+# Assuming Root Directory is KasserPro/KasserPro (Project Level)
+COPY KasserPro.csproj ./
 RUN dotnet restore
 
-# Copy everything and build
-WORKDIR /src
-COPY KasserPro/ ./KasserPro/
-WORKDIR /src/KasserPro/KasserPro
+COPY . .
 RUN dotnet publish -c Release -o /app/publish --no-restore
 
 # Runtime stage
