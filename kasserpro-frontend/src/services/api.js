@@ -12,6 +12,8 @@ export const productsApi = {
   create: (data) => api.post("/products", data),
   update: (id, data) => api.put(`/products/${id}`, data),
   delete: (id) => api.delete(`/products/${id}`),
+  updateAvailability: (id, isAvailable) => api.patch(`/products/${id}/availability`, isAvailable),
+  updateStock: (id, stock) => api.patch(`/products/${id}/stock`, stock),
 };
 
 export const categoriesApi = {
@@ -25,6 +27,7 @@ export const ordersApi = {
   getAll: (params) => api.get("/orders", { params }),
   getById: (id) => api.get(`/orders/${id}`),
   create: (data) => api.post("/orders", data),
+  print: (id) => api.get(`/orders/${id}/print`),
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, JSON.stringify(status), {
     headers: { "Content-Type": "application/json" }
   }),
@@ -33,4 +36,5 @@ export const ordersApi = {
 export const settingsApi = {
   get: () => api.get("/settings"),
   update: (data) => api.put("/settings", data),
+  updateTax: (data) => api.patch("/settings/tax", data),
 };

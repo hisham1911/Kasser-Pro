@@ -61,11 +61,14 @@ function Orders() {
     }
   };
 
-  const handlePrint = async (order) => {
+  const handlePrint = (order) => {
     try {
-      const res = await ordersApi.print(order.id);
       // فتح نافذة الطباعة
       const printWindow = window.open("", "_blank", "width=300,height=600");
+      if (!printWindow) {
+        toast.error("يرجى السماح بالنوافذ المنبثقة للطباعة");
+        return;
+      }
       printWindow.document.write(`
         <html dir="rtl">
         <head>
@@ -89,7 +92,7 @@ function Orders() {
           ?.map(
             (item) => `
             <div class="item">
-              <span>${item.product?.name || "منتج"} × ${item.quantity}</span>
+              <span>${item.productName || item.product?.name || "منتج"} × ${item.quantity}</span>
               <span>${(item.quantity * item.priceAtTime).toFixed(0)} ج.م</span>
             </div>
           `
