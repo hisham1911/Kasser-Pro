@@ -11,7 +11,7 @@ export default function ProductCard({ product, cartQty = 0, onClick, disabled })
             disabled={isDisabled}
             className={cn(
                 "w-[120px] bg-gray-800 rounded-xl flex flex-col items-center p-3 border border-gray-700 relative z-0",
-                "transition-transform duration-200 ease-out transition-shadow transition-colors",
+                "transition duration-200 ease-out",
                 "hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1 hover:z-50",
                 isDisabled && "opacity-50 cursor-not-allowed hover:border-gray-700 hover:shadow-none hover:translate-y-0 hover:z-0"
             )}
