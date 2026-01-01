@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19"/>
   <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite"/>
   <img src="https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS"/>
-  <img src="https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite"/>
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL"/>
 </p>
 
 <p align="center">
@@ -30,88 +30,157 @@
 
 ### ✨ لماذا KasserPro؟
 
-| الميزة              | الوصف                             |
-| ------------------- | --------------------------------- |
-| 🎨 **واجهة عصرية**  | تصميم Dark Mode أنيق ومريح للعين  |
-| 🌍 **دعم العربية**  | واجهة عربية كاملة مع اتجاه RTL    |
-| ⚡ **سريع وخفيف**   | بناء على أحدث التقنيات لأداء فائق |
-| 📱 **متجاوب**       | يعمل على جميع الشاشات والأجهزة    |
-| 🔒 **آمن**          | حماية البيانات وإدارة الصلاحيات   |
-| 🛠️ **قابل للتخصيص** | إعدادات مرنة تناسب احتياجاتك      |
+| الميزة | الوصف |
+|--------|-------|
+| 🎨 **واجهة عصرية** | تصميم Dark Mode أنيق ومريح للعين |
+| 🌍 **دعم العربية** | واجهة عربية كاملة مع اتجاه RTL |
+| ⚡ **سريع وخفيف** | بناء على أحدث التقنيات لأداء فائق |
+| 📱 **متجاوب** | يعمل على جميع الشاشات والأجهزة |
+| 🔒 **آمن** | JWT Authentication مع تشفير BCrypt |
+| 🏪 **Multi-tenant** | دعم متاجر متعددة بعزل كامل للبيانات |
+| 🛠️ **قابل للتخصيص** | إعدادات مرنة تناسب احتياجاتك |
 
 ---
 
-## 🚀 المميزات الرئيسية
+## 🚀 المميزات المُنجزة ✅
+
+### 🔐 نظام المصادقة والصلاحيات
+- ✅ تسجيل الدخول بـ JWT Token (صلاحية 7 أيام)
+- ✅ تسجيل متجر جديد مع حساب Owner
+- ✅ إضافة موظفين للمتجر
+- ✅ صلاحيات متعددة (Owner, Manager, Cashier, SuperAdmin)
+- ✅ حماية الـ Routes حسب الصلاحية
+- ✅ تشفير كلمات المرور بـ BCrypt
+
+### 🏪 نظام Multi-Tenant
+- ✅ كل متجر له بياناته المعزولة
+- ✅ فلترة تلقائية بـ StoreId
+- ✅ إعدادات مستقلة لكل متجر
 
 ### 💳 نقطة البيع (POS)
-
 - ✅ واجهة بيع سريعة وسهلة الاستخدام
-- ✅ عرض المنتجات بشكل مرئي جذاب
+- ✅ عرض المنتجات بشكل مرئي جذاب مع الصور
 - ✅ فلترة المنتجات حسب التصنيف
 - ✅ بحث سريع في المنتجات
-- ✅ سلة مشتريات ذكية
-- ✅ حساب تلقائي للضريبة (VAT)
+- ✅ سلة مشتريات ذكية مع التحقق من المخزون
+- ✅ حساب تلقائي للضريبة (قابل للتفعيل/التعطيل)
 - ✅ دعم الخصومات
 - ✅ طرق دفع متعددة (كاش - بطاقة - محفظة)
-- ✅ طباعة الفواتير
+- ✅ طباعة الفواتير الحرارية (ESC/POS)
 
 ### 📦 إدارة المنتجات
-
 - ✅ إضافة وتعديل وحذف المنتجات
 - ✅ تصنيف المنتجات في فئات
 - ✅ إدارة المخزون والكميات
+- ✅ تحديث المخزون تلقائياً عند البيع
 - ✅ تحديد حالة توفر المنتج
+- ✅ منع تفعيل منتج بمخزون صفر
 - ✅ إضافة صور للمنتجات
 
 ### 🏷️ إدارة التصنيفات
-
 - ✅ تنظيم المنتجات في فئات
 - ✅ تخصيص ألوان وأيقونات للتصنيفات
 - ✅ سهولة التنقل بين الفئات
 
 ### 📋 إدارة الطلبات
-
-- ✅ عرض سجل الطلبات الكامل
-- ✅ تفاصيل كل طلب
-- ✅ فلترة الطلبات حسب التاريخ
-- ✅ أرقام طلبات فريدة
-- ✅ حفظ ملاحظات على الطلبات
+- ✅ عرض سجل الطلبات مع Pagination
+- ✅ تفاصيل كل طلب مع الأصناف
+- ✅ أرقام طلبات فريدة (YYYYMMDD-XXXX)
+- ✅ حفظ سعر المنتج وقت البيع
+- ✅ طباعة إيصال الطلب
 
 ### ⚙️ الإعدادات
-
 - ✅ تفعيل/تعطيل الضريبة
 - ✅ تحديد نسبة الضريبة
-- ✅ إعدادات عامة للنظام
+- ✅ تخصيص اسم المتجر
+- ✅ تحديد العملة
+
+---
+
+## 🔲 الميزات الناقصة (خارطة الطريق)
+
+### 📊 التقارير والإحصائيات (أولوية عالية)
+- 🔲 لوحة تحكم Dashboard بالرسوم البيانية
+- 🔲 تقرير المبيعات اليومية/الأسبوعية/الشهرية
+- 🔲 تقرير الأرباح والخسائر
+- 🔲 تقرير المنتجات الأكثر مبيعاً
+- 🔲 تقرير حركة المخزون
+- 🔲 تصدير التقارير (PDF/Excel)
+
+### � إaدارة المخزون المتقدمة
+- 🔲 تنبيهات نفاد المخزون
+- 🔲 تقارير جرد المخزون
+- 🔲 تاريخ حركة المخزون (دخول/خروج)
+- 🔲 دعم الباركود والـ QR Code
+- 🔲 ماسح الباركود
+
+### 👥 إدارة العملاء
+- 🔲 قاعدة بيانات العملاء
+- 🔲 نظام نقاط الولاء
+- 🔲 تاريخ مشتريات العميل
+- 🔲 الفواتير الآجلة (الدين)
+
+### 🏭 إدارة الموردين والمشتريات
+- 🔲 قاعدة بيانات الموردين
+- 🔲 فواتير الشراء
+- 🔲 تتبع المدفوعات للموردين
+
+### 💰 ميزات مالية
+- 🔲 إدارة الصندوق (فتح/إغلاق الوردية)
+- � تقريتر الكاش في الدرج
+- 🔲 المصروفات اليومية
+- 🔲 تقارير الضرائب
+- 🔲 الفاتورة الإلكترونية
+
+### 🔧 ميزات إضافية
+- 🔲 العمل بدون إنترنت (Offline mode)
+- 🔲 النسخ الاحتياطي للبيانات
+- 🔲 تطبيق موبايل (iOS/Android)
+- 🔲 نظام الكوبونات والعروض
+- 🔲 إشعارات Push
 
 ---
 
 ## 🏗️ البنية التقنية
 
 ```
-KasserProFrontEnd/
+KasserPro/
 ├── 📁 KasserPro/                    # Backend - ASP.NET Core 8
 │   ├── 📁 Controllers/              # API Controllers
-│   │   ├── CategoriesController.cs
-│   │   ├── OrdersController.cs
-│   │   ├── ProductsController.cs
-│   │   └── SettingsController.cs
+│   │   ├── AuthController.cs        # المصادقة وتسجيل الدخول
+│   │   ├── BaseApiController.cs     # Controller أساسي مع StoreId
+│   │   ├── CategoriesController.cs  # إدارة التصنيفات
+│   │   ├── OrdersController.cs      # إدارة الطلبات
+│   │   ├── ProductsController.cs    # إدارة المنتجات
+│   │   └── SettingsController.cs    # الإعدادات
 │   ├── 📁 Models/                   # Data Models
-│   │   ├── Product.cs
-│   │   ├── Category.cs
-│   │   ├── Order.cs
-│   │   ├── OrderItem.cs
-│   │   ├── User.cs
-│   │   └── AppSettings.cs
+│   │   ├── Store.cs                 # المتجر
+│   │   ├── User.cs                  # المستخدم
+│   │   ├── Product.cs               # المنتج
+│   │   ├── Category.cs              # التصنيف
+│   │   ├── Order.cs                 # الطلب
+│   │   ├── OrderItem.cs             # عنصر الطلب
+│   │   └── AppSettings.cs           # الإعدادات
 │   ├── 📁 DTOs/                     # Data Transfer Objects
 │   ├── 📁 Data/                     # Database Context
+│   │   └── KasserDbContext.cs       # EF Core Context
 │   ├── 📁 Migrations/               # EF Core Migrations
 │   └── Program.cs                   # Entry Point
 │
 └── 📁 kasserpro-frontend/           # Frontend - React 19
     ├── 📁 src/
     │   ├── 📁 components/           # Reusable Components
-    │   │   └── Header.jsx
+    │   │   ├── Header.jsx
+    │   │   └── ProtectedRoute.jsx
+    │   ├── 📁 context/              # React Context
+    │   │   └── AuthContext.jsx      # حالة المصادقة
+    │   ├── 📁 hooks/                # Custom Hooks
+    │   │   ├── useProducts.js
+    │   │   ├── useCategories.js
+    │   │   └── useOrders.js
     │   ├── 📁 pages/                # Page Components
+    │   │   ├── Login.jsx            # تسجيل الدخول
+    │   │   ├── Register.jsx         # تسجيل متجر جديد
     │   │   ├── POS.jsx              # نقطة البيع
     │   │   ├── Products.jsx         # إدارة المنتجات
     │   │   ├── Orders.jsx           # سجل الطلبات
@@ -130,44 +199,44 @@ KasserProFrontEnd/
 ## 🛠️ التقنيات المستخدمة
 
 ### Backend
-
-| التقنية                                                                      | الإصدار | الوصف                         |
-| ---------------------------------------------------------------------------- | ------- | ----------------------------- |
-| ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)            | 8.0     | إطار العمل الأساسي            |
-| ![EF Core](https://img.shields.io/badge/EF_Core-8.0-512BD4?logo=dotnet)      | 8.0     | ORM للتعامل مع قاعدة البيانات |
-| ![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite)          | 3       | قاعدة البيانات                |
-| ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?logo=swagger) | 3.0     | توثيق API                     |
+| التقنية | الإصدار | الوصف |
+|---------|---------|-------|
+| ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet) | 8.0 | إطار العمل الأساسي |
+| ![EF Core](https://img.shields.io/badge/EF_Core-8.0-512BD4?logo=dotnet) | 8.0 | ORM للتعامل مع قاعدة البيانات |
+| ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql) | 16 | قاعدة البيانات (Production) |
+| ![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite) | 3 | قاعدة البيانات (Development) |
+| ![JWT](https://img.shields.io/badge/JWT-Auth-000000?logo=jsonwebtokens) | - | المصادقة |
+| ![BCrypt](https://img.shields.io/badge/BCrypt-Hash-green) | - | تشفير كلمات المرور |
+| ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI-85EA2D?logo=swagger) | 3.0 | توثيق API |
 
 ### Frontend
-
-| التقنية                                                                              | الإصدار | الوصف               |
-| ------------------------------------------------------------------------------------ | ------- | ------------------- |
-| ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)                    | 19.2    | مكتبة بناء الواجهات |
-| ![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite)                        | 7.2     | أداة البناء السريعة |
-| ![Tailwind](https://img.shields.io/badge/Tailwind-3.4-06B6D4?logo=tailwindcss)       | 3.4     | إطار CSS            |
-| ![React Router](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter) | 7.10    | التنقل بين الصفحات  |
-| ![Axios](https://img.shields.io/badge/Axios-1.13-5A29E4?logo=axios)                  | 1.13    | HTTP Client         |
-| ![Heroicons](https://img.shields.io/badge/Heroicons-2-8B5CF6)                        | 2.2     | أيقونات             |
+| التقنية | الإصدار | الوصف |
+|---------|---------|-------|
+| ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react) | 19.2 | مكتبة بناء الواجهات |
+| ![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite) | 7.2 | أداة البناء السريعة |
+| ![Tailwind](https://img.shields.io/badge/Tailwind-3.4-06B6D4?logo=tailwindcss) | 3.4 | إطار CSS |
+| ![React Query](https://img.shields.io/badge/React_Query-5-FF4154?logo=reactquery) | 5.90 | إدارة حالة السيرفر |
+| ![React Router](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter) | 7.10 | التنقل بين الصفحات |
+| ![Axios](https://img.shields.io/badge/Axios-1.13-5A29E4?logo=axios) | 1.13 | HTTP Client |
+| ![Heroicons](https://img.shields.io/badge/Heroicons-2-8B5CF6) | 2.2 | أيقونات |
 
 ---
 
 ## ⚡ التثبيت والتشغيل
 
 ### المتطلبات الأساسية
-
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [Node.js 18+](https://nodejs.org/)
+- [PostgreSQL](https://www.postgresql.org/) (للإنتاج) أو SQLite (للتطوير)
 - [Git](https://git-scm.com/)
 
 ### 1️⃣ استنساخ المشروع
-
 ```bash
 git clone https://github.com/YOUR_USERNAME/KasserPro.git
 cd KasserPro
 ```
 
 ### 2️⃣ تشغيل Backend
-
 ```bash
 # الانتقال لمجلد الـ Backend
 cd KasserPro/KasserPro
@@ -180,11 +249,12 @@ dotnet run
 ```
 
 > 🌐 Backend يعمل على: `http://localhost:5299`
->
+> 
 > 📚 Swagger UI: `http://localhost:5299/swagger`
+>
+> 🏥 Health Check: `http://localhost:5299/api/health`
 
 ### 3️⃣ تشغيل Frontend
-
 ```bash
 # فتح Terminal جديد
 cd kasserpro-frontend
@@ -198,43 +268,59 @@ npm run dev
 
 > 🌐 Frontend يعمل على: `http://localhost:5173`
 
+### 4️⃣ بيانات الدخول الافتراضية
+```
+اسم المستخدم: admin
+كلمة المرور: admin123
+```
+
 ---
 
 ## 📡 API Endpoints
 
-### Products - المنتجات
+### Auth - المصادقة
+| Method | Endpoint | الوصف |
+|--------|----------|-------|
+| `POST` | `/api/auth/login` | تسجيل الدخول |
+| `POST` | `/api/auth/register` | تسجيل متجر جديد |
+| `POST` | `/api/auth/add-user` | إضافة موظف (Owner/Manager) |
+| `GET` | `/api/auth/me` | معلومات المستخدم الحالي |
 
-| Method   | Endpoint             | الوصف             |
-| -------- | -------------------- | ----------------- |
-| `GET`    | `/api/products`      | جلب جميع المنتجات |
-| `GET`    | `/api/products/{id}` | جلب منتج محدد     |
-| `POST`   | `/api/products`      | إضافة منتج جديد   |
-| `PUT`    | `/api/products/{id}` | تعديل منتج        |
-| `DELETE` | `/api/products/{id}` | حذف منتج          |
+### Products - المنتجات
+| Method | Endpoint | الوصف |
+|--------|----------|-------|
+| `GET` | `/api/products` | جلب جميع المنتجات (مع فلترة) |
+| `GET` | `/api/products/{id}` | جلب منتج محدد |
+| `POST` | `/api/products` | إضافة منتج جديد |
+| `PUT` | `/api/products/{id}` | تعديل منتج |
+| `DELETE` | `/api/products/{id}` | حذف منتج |
+| `PATCH` | `/api/products/{id}/stock` | تحديث المخزون |
+| `PATCH` | `/api/products/{id}/availability` | تغيير حالة التوفر |
 
 ### Categories - التصنيفات
-
-| Method   | Endpoint               | الوصف              |
-| -------- | ---------------------- | ------------------ |
-| `GET`    | `/api/categories`      | جلب جميع التصنيفات |
-| `POST`   | `/api/categories`      | إضافة تصنيف        |
-| `PUT`    | `/api/categories/{id}` | تعديل تصنيف        |
-| `DELETE` | `/api/categories/{id}` | حذف تصنيف          |
+| Method | Endpoint | الوصف |
+|--------|----------|-------|
+| `GET` | `/api/categories` | جلب جميع التصنيفات |
+| `GET` | `/api/categories/{id}` | جلب تصنيف محدد |
+| `GET` | `/api/categories/{id}/products` | منتجات التصنيف |
+| `POST` | `/api/categories` | إضافة تصنيف |
+| `PUT` | `/api/categories/{id}` | تعديل تصنيف |
+| `DELETE` | `/api/categories/{id}` | حذف تصنيف |
 
 ### Orders - الطلبات
-
-| Method | Endpoint           | الوصف            |
-| ------ | ------------------ | ---------------- |
-| `GET`  | `/api/orders`      | جلب جميع الطلبات |
-| `GET`  | `/api/orders/{id}` | جلب طلب محدد     |
-| `POST` | `/api/orders`      | إنشاء طلب جديد   |
+| Method | Endpoint | الوصف |
+|--------|----------|-------|
+| `GET` | `/api/orders` | جلب جميع الطلبات (Paginated) |
+| `GET` | `/api/orders/{id}` | جلب طلب محدد |
+| `POST` | `/api/orders` | إنشاء طلب جديد |
+| `GET` | `/api/orders/{id}/print` | طباعة إيصال الطلب |
 
 ### Settings - الإعدادات
-
-| Method | Endpoint        | الوصف           |
-| ------ | --------------- | --------------- |
-| `GET`  | `/api/settings` | جلب الإعدادات   |
-| `PUT`  | `/api/settings` | تحديث الإعدادات |
+| Method | Endpoint | الوصف |
+|--------|----------|-------|
+| `GET` | `/api/settings` | جلب الإعدادات |
+| `PUT` | `/api/settings` | تحديث الإعدادات |
+| `PATCH` | `/api/settings/tax` | تحديث إعدادات الضريبة |
 
 ---
 
@@ -242,16 +328,45 @@ npm run dev
 
 ```mermaid
 erDiagram
+    Store ||--o{ User : has
+    Store ||--o{ Product : has
+    Store ||--o{ Category : has
+    Store ||--o{ Order : has
+    Store ||--|| AppSettings : has
+    
     Category ||--o{ Product : contains
     Product ||--o{ OrderItem : "ordered in"
     Order ||--|{ OrderItem : contains
     User ||--o{ Order : creates
+
+    Store {
+        int Id PK
+        string Name
+        string Phone
+        string Address
+        string Logo
+        bool IsActive
+        datetime CreatedAt
+        datetime ExpiresAt
+    }
+
+    User {
+        int Id PK
+        string Username UK
+        string PasswordHash
+        string FullName
+        string Role
+        bool IsActive
+        int StoreId FK
+        datetime CreatedAt
+    }
 
     Category {
         int Id PK
         string Name
         string Color
         string Icon
+        int StoreId FK
     }
 
     Product {
@@ -262,17 +377,19 @@ erDiagram
         string ImageUrl
         int Stock
         bool IsAvailable
+        int StoreId FK
     }
 
     Order {
         int Id PK
-        string OrderNumber
+        string OrderNumber UK
         datetime CreatedAt
         decimal Subtotal
         decimal Discount
         decimal TaxRate
         string PaymentMethod
         int UserId FK
+        int StoreId FK
         string Notes
     }
 
@@ -281,59 +398,38 @@ erDiagram
         int OrderId FK
         int ProductId FK
         int Quantity
-        decimal UnitPrice
+        decimal PriceAtTime
     }
 
-    User {
+    AppSettings {
         int Id PK
-        string Username
-        string PasswordHash
-        string Role
+        bool TaxEnabled
+        decimal TaxRate
+        string StoreName
+        string Currency
+        int StoreId FK
     }
 ```
 
 ---
 
-## 🎨 لقطات الشاشة
+## 🚀 النشر (Deployment)
 
-<details>
-<summary>📸 اضغط لعرض الصور</summary>
+### Railway (موصى به)
+المشروع جاهز للنشر على Railway مع:
+- PostgreSQL database
+- Automatic migrations
+- Health check endpoint
 
-### نقطة البيع (POS)
+راجع ملف `RAILWAY_DEPLOYMENT.md` للتفاصيل.
 
-> واجهة البيع الرئيسية مع عرض المنتجات والسلة
-
-### إدارة المنتجات
-
-> إضافة وتعديل المنتجات مع التصنيفات
-
-### سجل الطلبات
-
-> عرض جميع الطلبات مع التفاصيل
-
-### الإعدادات
-
-> تخصيص إعدادات النظام
-
-</details>
-
----
-
-## 🔮 خارطة الطريق
-
-- [x] 🧾 نظام نقطة البيع الأساسي
-- [x] 📦 إدارة المنتجات والتصنيفات
-- [x] 📋 سجل الطلبات
-- [x] ⚙️ إعدادات الضريبة
-- [ ] 🖨️ طباعة الفواتير الحرارية
-- [ ] 📊 تقارير المبيعات والإحصائيات
-- [ ] 👥 إدارة المستخدمين والصلاحيات
-- [ ] 🔐 نظام تسجيل الدخول
-- [ ] 📱 تطبيق موبايل
-- [ ] ☁️ مزامنة سحابية
-- [ ] 🧮 إدارة متقدمة للمخزون
-- [ ] 💰 تقارير الأرباح والخسائر
-- [ ] 🎫 نظام الكوبونات والعروض
+### متغيرات البيئة
+```env
+DATABASE_URL=postgresql://user:password@host:port/database
+JWT_KEY=your-secret-key-min-32-chars
+JWT_ISSUER=KasserPro
+JWT_AUDIENCE=KasserProUsers
+```
 
 ---
 
@@ -358,16 +454,11 @@ erDiagram
 ## 👨‍💻 المطور
 
 <p align="center">
-  <strong>تم التطوير بـ ❤️ </strong>
+  <strong>تم التطوير بـ ❤️</strong>
 </p>
 
 ---
 
 <p align="center">
   <strong>⭐ إذا أعجبك المشروع، لا تنسى إضافة نجمة! ⭐</strong>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/github/stars/YOUR_USERNAME/KasserPro?style=social" alt="Stars"/>
-  <img src="https://img.shields.io/github/forks/YOUR_USERNAME/KasserPro?style=social" alt="Forks"/>
 </p>
